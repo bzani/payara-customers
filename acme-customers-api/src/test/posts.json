@@ -1,5 +1,6 @@
 // POST on http://localhost:8080/acme-customers-api-1.0.0-SNAPSHOT/v1/customers
-// vai gerar id verdadeiro no retorno do post, para consultar, agregar na URL e fazer requisicao GET
+// the id will be automatically generated in the post response
+// use the id in a GET call to the endpoint to consult the resource created
 {
   "type": "customer",
   "createdAt": "2018-08-11T15:58:00.000+02:00",
