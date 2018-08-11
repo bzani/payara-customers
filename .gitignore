@@ -1,0 +1,10 @@
+### Target and Maven ###
+/acme-customers-api/target/
+/acme-customers-lib/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr

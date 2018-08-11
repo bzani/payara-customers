@@ -1,0 +1,13 @@
+// POST on http://localhost:8080/acme-customers-api-1.0.0-SNAPSHOT/v1/customers
+// vai gerar id verdadeiro no retorno do post, para consultar, agregar na URL e fazer requisicao GET
+{
+  "type": "customer",
+  "createdAt": "2018-08-11T15:58:00.000+02:00",
+  "id": "1",
+  "updatedAt": "2018-08-11T15:59:00.000+02:00",
+  "dateOfBirth": "2010-08-11T15:58:00.000+02:00",
+  "email": "c1@gmail.com",
+  "firstName": "John",
+  "lastName": "Mason",
+  "status": "ACTIVE"
+}
