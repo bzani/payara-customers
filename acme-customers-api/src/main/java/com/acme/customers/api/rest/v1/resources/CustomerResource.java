@@ -1,5 +1,7 @@
 package com.acme.customers.api.rest.v1.resources;
 
+import com.acme.customers.api.services.exceptions.EmptyPayloadException;
+import com.acme.customers.api.services.exceptions.ResourceNotFoundException;
 import com.acme.customers.lib.v1.Customer;
 import com.acme.customers.lib.v1.CustomerStatus;
 import com.acme.customers.lib.v1.response.CustomerList;
@@ -92,10 +94,10 @@ public class CustomerResource {
 
         con.close();
 
-        CustomerList customerList = new CustomerList();
-        customerList.setCustomers(customers);
+//        CustomerList customerList = new CustomerList();
+//        customerList.setCustomers(customers);
 
-        return Response.ok(customerList).header("X-Total-Count", 0).build();
+        return Response.ok(customers).header("X-Total-Count", 0).build();
     }
 
     @GET
@@ -108,28 +110,32 @@ public class CustomerResource {
         stmt.setString(1, id);
         ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
+        if (!rs.next()) {
 
-            Customer customer = new Customer();
-            customer.setId(rs.getString("id"));
-            customer.setUpdatedAt(rs.getDate("updated_at"));
-            customer.setCreatedAt(rs.getDate("created_at"));
-            customer.setFirstName(rs.getString("first_name"));
-            customer.setLastName(rs.getString("last_name"));
-            customer.setEmail(rs.getString("email"));
-            customer.setDateOfBirth(rs.getDate("date_of_birth"));
-            customer.setStatus(CustomerStatus.valueOf(rs.getString("status")));
-
-            con.close();
-
-            return Response.ok(customer).build();
+            throw new ResourceNotFoundException(Customer.class.getSimpleName(), id);
         }
 
-        return Response.noContent().build();
+        Customer customer = new Customer();
+        customer.setId(rs.getString("id"));
+        customer.setUpdatedAt(rs.getDate("updated_at"));
+        customer.setCreatedAt(rs.getDate("created_at"));
+        customer.setFirstName(rs.getString("first_name"));
+        customer.setLastName(rs.getString("last_name"));
+        customer.setEmail(rs.getString("email"));
+        customer.setDateOfBirth(rs.getDate("date_of_birth"));
+        customer.setStatus(CustomerStatus.valueOf(rs.getString("status")));
+
+        con.close();
+
+        return Response.ok(customer).build();
     }
 
     @POST
     public Response createCustomer(Customer newCustomer) throws SQLException {
+
+        if (newCustomer == null) {
+            throw new EmptyPayloadException(Customer.class.getSimpleName());
+        }
 
         Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement("INSERT INTO customers " +
